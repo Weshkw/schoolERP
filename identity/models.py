@@ -36,7 +36,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class CustomUser(AbstractUser):
-    national_id_or_birth_cert_name = models.CharField(max_length=100,help_text='For student provide the full name on the birth certificate. For a parent provide the name on th ID card')
+    national_id_or_birth_cert_name = models.CharField(max_length=100,help_text='For student provide the full name on the birth certificate. For an administrator,teacher,staff,parent etc provide the name on th ID card')
     email = models.EmailField(null=True,blank=True,help_text='Optional')
     date_of_birth = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=100, help_text='This is where one resides eg Nairobi ABC estate.')
@@ -85,6 +85,10 @@ class CustomUser(AbstractUser):
             self.email = None
         super(CustomUser, self).save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = "SystemUser"
+        verbose_name_plural = "SystemUsers"
+
     def __str__(self):
         return self.national_id_or_birth_cert_name
 
@@ -114,21 +118,7 @@ class School(models.Model):
 
 
 
-# class SuperAdmin(CustomUser):
-#     pass
 
-# class Admin(CustomUser):
-#     pass
-#     # Additional fields for Admins can be added here if required.
-
-# class Teacher(CustomUser):
-#     tsc_number = models.CharField(max_length=200,unique=True,blank=True, null=True)
-#     curriculum_vitae = models.FileField(upload_to='curriculum vitae/',blank=True, null=True)
-#     employment_date = models.DateField()
-#     position = models.TextField(help_text='Eg Headmaster,Intern Teacher ,Grade2 Classtaeacher etc.')
-#     professional_organizations = models.CharField(max_length=200,blank=True, null=True)
-#     models.ManyToManyField('Awards', blank=True,help_text='Awards Earned in school.')
-#     # Additional fields for Teachers can be added here if required.
 
 
 
