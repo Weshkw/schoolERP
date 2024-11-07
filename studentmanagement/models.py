@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 from identity.models import CustomUser,School
 from django.db.models.signals import post_delete
 from phonenumber_field.modelfields import PhoneNumberField
@@ -49,8 +50,7 @@ class Student(CustomUser):
     def save(self, *args, **kwargs):
         # Set the username to student_idintity and password to grade.name before saving. Onbording manual should advise students to cahange password of their accounts once they start using the account
         self.username = self.student_identity
-        raw_password = f"{self.grade.name}school"
-        self.password=raw_password
+        self.password=make_password(self.grade.name)
         super().save(*args, **kwargs)
 
 
@@ -85,8 +85,7 @@ class Guardian(CustomUser):
     def save(self, *args, **kwargs):
         # Set the username to student_id before saving
         self.username = self.phone_number
-        raw_password = f"{self.phone_number}school"
-        self.password=raw_password 
+        self.password=make_password(F'{self.phone_number}')
         super().save(*args, **kwargs)
     
     class Meta:

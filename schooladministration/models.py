@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 from identity.models import CustomUser, School
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -34,8 +35,7 @@ class Administrator(CustomUser):
 
     def save(self, *args, **kwargs):
         self.username = self.phone_number
-        raw_password = f"{self.phone_number}school"
-        self.password = raw_password 
+        self.password = make_password(f'{self.phone_number}')
         super().save(*args, **kwargs)
     
     class Meta:

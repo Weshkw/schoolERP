@@ -37,7 +37,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     national_id_or_birth_cert_name = models.CharField(max_length=100,help_text='For student provide the full name on the birth certificate. For an administrator,teacher,staff,parent etc provide the name on th ID card')
-    email = models.EmailField(null=True,blank=True,help_text='Optional')
+    email = models.EmailField(null=True,blank=True,help_text='Required for administrators.')
     date_of_birth = models.DateField(null=True, blank=True)
     address = models.CharField(max_length=100, help_text='This is where one resides eg Nairobi ABC estate.')
 

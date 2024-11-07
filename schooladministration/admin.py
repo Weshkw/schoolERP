@@ -4,7 +4,7 @@ from .models import Administrator, AdministratorRank
 class AdministratorAdmin(admin.ModelAdmin):
     model = Administrator
     list_display = (
-        'national_id_or_birth_cert_name','get_ranks','professional_identity','phone_number','national_id_number','email', 'date_of_birth','gender', 'nationality', 'school','date_of_joining', 'is_staff'
+        'national_id_or_birth_cert_name','get_ranks','school','professional_identity','phone_number','national_id_number','email', 'date_of_birth','gender', 'nationality', 'school','date_of_joining', 'is_staff'
     )
 
     filter_horizontal = ('ranks',)
