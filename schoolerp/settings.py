@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'identity',
     'studentmanagement',
     'schooladministration',
+    'schoolfinances',
 ]
 
 MIDDLEWARE = [

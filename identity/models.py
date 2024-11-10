@@ -96,11 +96,11 @@ class CustomUser(AbstractUser):
 
 
 class School(models.Model):
-    school_identity = models.UUIDField(
+    id= models.UUIDField(
         default=uuid.uuid4,
         editable=False,
         unique=True,
-        help_text="Unique identifier for the school."
+        primary_key=True
     )
     name = models.CharField(max_length=255, unique=True, help_text="Full name of the school.")
     address = models.TextField(help_text="Physical address of the school eg Witeithie in Kiambu county.")

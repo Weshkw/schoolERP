@@ -90,8 +90,8 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'name',
-        'school_identity',
         'principal_name',
         'school_type',
         'contact_number',
@@ -121,7 +121,7 @@ class SchoolAdmin(admin.ModelAdmin):
         ('Basic Information', {
             'fields': (
                 'name',
-                'school_identity',
+                'id',
                 'school_type',
                 'established_date'
             )
@@ -140,4 +140,4 @@ class SchoolAdmin(admin.ModelAdmin):
         }),
     )
     
-    readonly_fields = ('school_identity', 'date_created', 'date_updated')
+    readonly_fields = ('id', 'date_created', 'date_updated')
