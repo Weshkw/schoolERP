@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Point - Education & Courses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .curved-section {
+            border-radius: 0 0 50% 50% / 0 0 100px 100px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section with Curved Bottom -->
+    <div class="curved-section bg-gradient-to-r from-blue-900 to-indigo-900">
+        <!-- Navigation -->
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="text-white text-2xl font-bold">
+                        <div class="flex items-center">
+                            <svg class="h-8 w-8 text-white mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                            School Point ERP
+                        </div>
+                    </span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Mobile Navigation -->
+                <div class="md:hidden">
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Pay Fees Button -->
+        <div class="container mx-auto px-6 py-4 text-center">
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-full font-medium">
+                Pay School Fees
+            </button>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="container mx-auto px-6 py-16 text-center md:py-24">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Welcome to School Point ERP
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                An intuitive school management system designed to streamline operations, provide students with easy access to learning materials, and support staff with real-time data.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-medium w-full md:w-auto">
+                    Staff Login
+                </button>
+                <button class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white hover:text-gray-900 w-full md:w-auto">
+                    Guardian Login
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-medium w-full md:w-auto">
+                    Learner Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="text-blue-500 mb-4">
+                    <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Effortless School Data Management</h3>
+                <p class="text-gray-600">A single point of truth that enhances the credibility of school data.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="text-blue-500 mb-4">
+                    <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Flexible Management</h3>
+                <p class="text-gray-600">An online accessible system allowing administrators to work remotely if needed.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="text-blue-500 mb-4">
+                    <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">For Students</h3>
+                <p class="text-gray-600">Engage with dynamic and interactive content.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-blue-900 text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Simplify School Management?</h2>
+            <p class="text-lg text-blue-200 mb-8">Register your school with us to experience the magic of easy management firsthand.</p>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-medium">
+                Get Started Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4">School Point ERP</h4>
+                    <p class="text-gray-400">Empowering schools with easy management solutions.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="text-gray-400">
+                        <li class="mb-2"><a href="#" class="hover:text-white">About Us</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Support</h4>
+                    <ul class="text-gray-400">
+                        <li class="mb-2"><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li class="mb-2"><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Us</h4>
+                    <ul class="text-gray-400">
+                        <li class="mb-2">Email: kevinwaweru1233@gmail.com</li>
+                        <li class="mb-2">Phone: +254 725 511 490</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p id="copyright">&copy; <span id="year"></span> School Point ERP. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearElement = document.getElementById('year');
+            const currentYear = new Date().getFullYear();
+            yearElement.textContent = currentYear;
+        });
+    </script>
+</body>
+</html>

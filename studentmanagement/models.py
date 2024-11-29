@@ -1,13 +1,36 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
-from identity.models import CustomUser, School
+from identity.models import CustomUser, School, TimeStampedModel
 from django.db.models.signals import post_delete
 from phonenumber_field.modelfields import PhoneNumberField
 from django.dispatch import receiver
 
+class Student(TimeStampedModel):
+    date_of_birth = models.DateField(null=True, blank=True)
+    address = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text='This is where one resides, e.g., Nairobi ABC estate.'
+    )
 
-class Student(CustomUser):
-    school = models.ForeignKey(School, on_delete=models.CASCADE, help_text="School where the student is enrolled.")
+    GENDER_CHOICES = (
+        ('MALE', 'Male'),
+        ('FEMALE', 'Female'),
+        ('OTHER', 'Other')
+    )
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+
+    NATIONALITY_CHOICES = (
+        ('KENYAN', 'Kenyan'),
+        ('OTHERS', 'Others'),
+    )
+    nationality = models.CharField(max_length=100, choices=NATIONALITY_CHOICES)
+    full_name = models.CharField(
+        max_length=100,
+        help_text='For students, provide the full name on the birth certificate.'
+    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE, help_text="School a student attends.")
     student_identity = models.CharField(
         max_length=255,
         help_text="Unique student identifier in the school (e.g., Admission number)."
@@ -48,27 +71,20 @@ class Student(CustomUser):
         null=True,
         help_text="Current grade level of the student."
     )
-    date_added_to_system = models.DateField(auto_now_add=True, help_text="Date the student was added to the system.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the student's record was last updated.")
 
     # Extracurricular Activities
+    student_leadership_role = models.ManyToManyField('StudentLeadershipTitle', blank=True, help_text="Name of the title, e.g., Prefect, Game Captain.")
     clubs = models.ManyToManyField('ClubsOrganization', blank=True, help_text="Clubs the student is a member of.")
     sports = models.ManyToManyField('Sport', blank=True, help_text="Sports the student participates in.")
     awards = models.ManyToManyField('Award', blank=True, help_text="Awards the student has received.")
 
-    def save(self, *args, **kwargs):
-        # Set the username to student_identity and password to the grade name before saving.
-        self.username = self.student_identity
-        self.password = make_password(self.grade.name)
-        super().save(*args, **kwargs)
-
     class Meta:
         verbose_name = "Student"
         verbose_name_plural = "Students"
+        unique_together = ('school', 'student_identity')
 
     def __str__(self):
-        return self.national_id_or_birth_cert_name
-
+        return self.full_name
 
 # Signal to delete guardian if they have no more associated students
 @receiver(post_delete, sender=Student)
@@ -78,8 +94,12 @@ def delete_orphaned_guardian(sender, instance, **kwargs):
         if not remaining_students:
             instance.parentguardian.delete()
 
-
-class Guardian(CustomUser):
+class Guardian(TimeStampedModel):
+    guardian_user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+    )
+    school = models.ManyToManyField(School, help_text="Schools a guardian has a student in.")
     national_id_number = models.CharField(
         unique=True,
         max_length=50,
@@ -87,78 +107,92 @@ class Guardian(CustomUser):
         blank=True,
         help_text="National ID number of the guardian."
     )
-    phone_number = PhoneNumberField(
-        unique=True,
-        help_text="Phone number for identifying and contacting the guardian."
-    )
-    date_created = models.DateField(auto_now_add=True, help_text="Date the guardian was added to the system.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the guardian's record was last updated.")
 
     def __str__(self):
-        return self.national_id_or_birth_cert_name
-
-    def save(self, *args, **kwargs):
-        # Set the username to phone_number and password to the phone number before saving.
-        self.username = self.phone_number
-        self.password = make_password(str(self.phone_number))
-        super().save(*args, **kwargs)
+        return self.guardian_user.username
 
     class Meta:
         verbose_name = "Guardian"
         verbose_name_plural = "Guardians"
 
-
-class Subject(models.Model):
+class Subject(TimeStampedModel):
     name = models.CharField(max_length=100, help_text="Name of the academic subject (e.g., Math, Science).")
-    date_created = models.DateField(auto_now_add=True, help_text="Date the subject was created.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the subject's record was last updated.")
 
     def __str__(self):
         return self.name
 
-
-class Grade(models.Model):
+class Grade(TimeStampedModel):
     name = models.CharField(max_length=50, help_text="Educational level (e.g., Grade 1, PP1).")
-    date_created = models.DateField(auto_now_add=True, help_text="Date the grade was created.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the grade's record was last updated.")
 
     def __str__(self):
         return self.name
 
+class StudentLeadershipTitle(TimeStampedModel):
+    name = models.CharField(max_length=100, unique=True, help_text="Name of the title, e.g., Prefect, Game Captain.")
+    description = models.TextField(blank=True, null=True, help_text="Optional description of the title.")
 
-class ClubsOrganization(models.Model):
+    class Meta:
+        verbose_name = "Student Leadership Title"
+        verbose_name_plural = "Student Leadership Titles"
+
+    def __str__(self):
+        return self.name
+
+class ClubsOrganization(TimeStampedModel):
     name = models.CharField(max_length=100, help_text="Name of the club or organization (e.g., Debate Club).")
-    date_created = models.DateField(auto_now_add=True, help_text="Date the club or organization was created.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the club or organization's record was last updated.")
 
     def __str__(self):
         return self.name
 
-
-class Sport(models.Model):
+class Sport(TimeStampedModel):
     name = models.CharField(max_length=100, help_text="Name of the sport (e.g., Soccer, Basketball).")
-    date_created = models.DateField(auto_now_add=True, help_text="Date the sport was added.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the sport's record was last updated.")
 
     def __str__(self):
         return self.name
 
-
-class Award(models.Model):
+class Award(TimeStampedModel):
     name = models.CharField(max_length=100, help_text="Name of the award (e.g., Best Performer, Most Improved).")
-    date_created = models.DateField(auto_now_add=True, help_text="Date the award was added.")
-    date_updated = models.DateTimeField(auto_now=True, help_text="Date the award's record was last updated.")
 
     def __str__(self):
         return self.name
-    
-class Attendance(models.Model):
-    pass
 
-class ReportCard(models.Model):
-    pass
+class Attendance(TimeStampedModel):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, help_text="Student whose attendance is being recorded.")
+    date = models.DateField(help_text="Date of the attendance record.")
+    status = models.CharField(max_length=50, choices=[('present', 'Present'), ('absent', 'Absent'), ('late', 'Late')], help_text="Attendance status.")
 
-class HomeworkAssignment(models.Model):
-    pass
-class MedicalRecord(models.Model):
-    pass
+    def __str__(self):
+        return f"{self.student.full_name} - {self.date} - {self.status}"
+
+class ReportCard(TimeStampedModel):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, help_text="Student whose report card is being recorded.")
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, help_text="Grade level of the report card.")
+    subjects = models.ManyToManyField(Subject, through='ReportCardSubject', help_text="Subjects and their grades in the report card.")
+
+    def __str__(self):
+        return f"{self.student.full_name} - {self.grade.name} Report Card"
+
+class ReportCardSubject(models.Model):
+    report_card = models.ForeignKey(ReportCard, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    grade = models.CharField(max_length=10, help_text="Grade received in the subject.")
+
+    def __str__(self):
+        return f"{self.subject.name} - {self.grade}"
+
+class HomeworkAssignment(TimeStampedModel):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, help_text="Subject for the homework assignment.")
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, help_text="Grade level for the homework assignment.")
+    description = models.TextField(help_text="Description of the homework assignment.")
+    due_date = models.DateField(help_text="Due date for the homework assignment.")
+
+    def __str__(self):
+        return f"{self.subject.name} - {self.grade.name} Homework"
+
+class MedicalRecord(TimeStampedModel):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, help_text="Student whose medical record is being recorded.")
+    date = models.DateField(help_text="Date of the medical record.")
+    description = models.TextField(help_text="Description of the medical condition or treatment.")
+
+    def __str__(self):
+        return f"{self.student.full_name} - Medical Record - {self.date}"

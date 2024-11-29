@@ -1,27 +1,26 @@
 from django.contrib import admin
-from .models import TermOrSemester, PayableFee, FeePayment, FeesStructure
+from .models import TermOrSemester, FeeAllocationCategory, PaymentCollection, FeesStructure
 
 
 @admin.register(TermOrSemester)
 class TermOrSemesterAdmin(admin.ModelAdmin):
-    list_display = ('school', 'name', 'start_date', 'end_date', 'academic_year')
-    search_fields = ('name', 'academic_year', 'school__name')
+    list_display = [field.name for field in TermOrSemester._meta.fields]
+    search_fields = [field.name for field in TermOrSemester._meta.fields]
 
 
-@admin.register(PayableFee)
-class PayableFeeAdmin(admin.ModelAdmin):
-    list_display = ('school', 'term_or_semester', 'total_fees', 'due_date')
-    search_fields = ('school__name', 'term_or_semester__name', 'description')
+@admin.register(FeeAllocationCategory)
+class FeeAllocationCategoryAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in FeeAllocationCategory._meta.fields]
+    search_fields = [field.name for field in FeeAllocationCategory._meta.fields]
 
 
-@admin.register(FeePayment)
-class FeePaymentAdmin(admin.ModelAdmin):
-    list_display = ('student', 'term_or_semester', 'amount_paid', 'payment_date', 'payment_method', 'date_created', 'date_updated')
-    search_fields = ('student__name', 'term_or_semester__name', 'payment_method', 'narration')
-    list_filter = ('payment_method', 'payment_date')
+@admin.register(PaymentCollection)
+class PaymentCollectionAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in PaymentCollection._meta.fields]
+    search_fields = [field.name for field in PaymentCollection._meta.fields]
 
 
 @admin.register(FeesStructure)
 class FeesStructureAdmin(admin.ModelAdmin):
-    list_display = ('school', 'description', 'upload_date')
-    search_fields = ('school__name', 'description')
+    list_display = [field.name for field in FeesStructure._meta.fields]
+    search_fields = [field.name for field in FeesStructure._meta.fields]
